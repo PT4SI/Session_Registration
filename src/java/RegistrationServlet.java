@@ -72,6 +72,7 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         // processRequest(request, response);
         String firstname = request.getParameter("fname");
+        
         PrintWriter out = response.getWriter();
        
         String lastname = request.getParameter("lname");
@@ -100,24 +101,54 @@ out.println("<h1>Servlet LoginSessionServlet at " + request.getContextPath()
 + "</h1>");
 out.println("<p>Are you really want to confirm the following infomation? <p>First Name :");
 
-if(request.getParameter("fname") != null){
+if(firstname.length() > 0){
              out.println( firstname );
         } else {
-             out.println("Please input your First Name!");
+             out.println("<font color=red>Please input your First Name!</font>");
           }
         
-out.println("<p>Last Name: " + lastname + "<p>Email: " + email + "<p>Username: " + usrname + "<p>Password: ");
+out.println("<p>Last Name: ");
+        
+        if (lastname.length() > 0){
+            out.println( lastname );
+        }  else {
+            out.println("<font color=red>Please input your Last Name!</font>");
+        }
+                
+out.println("<p>Email: ");
+        
+if (email.length()==0){
+    out.println("<font color=red>Please input your email!</font>");
+}else if(email.indexOf("@") < 0 && email.indexOf(".") < 0){
+    out.println("<font color=red>Not valid email!</font>");
+}else {
+    out.println(email);
+}
 
-if (request.getParameter("pw")==null){
-    out.println(pw);
+out.println("<p>Username: ");
+
+if (usrname.length()==0){
+    out.println("<font color=red>Please input your username!</font>");
+}else{
+out.println(usrname);
+}
+
+out.println("<p>Password: ");
+
+if (pw.length()==0){
+    out.println("<font color=red>Please input your password!</font>");
 }else if (pw.equals(cpw)){
-            out.println("Please input password - <a href=\"javascript:history.back()\">Go Back</a>");
+            out.println(pw);
             }else{
     out.println("Your password not match with confirm's ! - <a href=\"javascript:history.back()\">Go Back</a>");
 }
 
-
-out.println("<form action=\"" + request.getContextPath() + "/ProgressRegistration\" method=\"post\"><p><input type=\"submit\" value=\"Yes\"></form>"); out.println("</body>");
+if (firstname.length()>0 && lastname.length()>0 && email.length()>0 && usrname.length()>0 && pw.length()>0 && pw.equals(cpw) && email.indexOf("@") < 0 && email.indexOf(".") < 0){
+    out.println("<form action=\"" + request.getContextPath() + "/ProgressRegistration\" method=\"post\"><p><input type=\"submit\" value=\"Yes\"></form>"); 
+}else {
+    out.println("<p><font color=red>Please <a href=\"javascript:history.back()\">Go Back</a> to fill all the information and then submit</font>");
+}
+out.println("</body>");
 out.println("</html>"); } finally {
 out.close(); }
     }
